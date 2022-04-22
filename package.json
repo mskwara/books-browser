@@ -20,6 +20,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-i18next": "^11.16.7",
+    "react-infinite-scroller": "^1.2.6",
     "react-query": "^3.36.0",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
@@ -34,7 +35,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "pretty": "prettier --write \"./**/*.{js,jsx,json,scss}\""
   },
   "eslintConfig": {
     "extends": [
@@ -78,5 +80,9 @@
     "eslint": "^8.10.0",
     "eslint-plugin-react": "^7.29.3",
     "webpack": "^5.72.0"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 100
   }
 }

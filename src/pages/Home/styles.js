@@ -35,4 +35,11 @@ export default {
   book: {
     marginBottom: 10,
   },
+  infiniteLoaderWrapper: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 30,
+    boxSizing: 'border-box',
+  },
 };

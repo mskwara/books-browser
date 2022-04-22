@@ -7,9 +7,7 @@ import styles from './styles';
 const Book = ({ image, title, description, sx }) => {
   return (
     <Box sx={{ ...styles.root, ...sx }}>
-      {image && (
-        <Box component="img" src={image} alt={title} sx={styles.image} />
-      )}
+      {image && <Box component="img" src={image} alt={title} sx={styles.image} />}
       <Box sx={styles.content}>
         <Typography variant="h2">{title}</Typography>
         <Typography variant="body">{description}</Typography>

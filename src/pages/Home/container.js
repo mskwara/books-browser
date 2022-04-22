@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import { getBooks, GET_BOOKS } from './queries';
-import { isEmpty } from 'lodash';
-import BrowserView from './view';
-import { formatBooks } from './utils';
+import { isEmpty, isNil } from 'lodash';
 import useLoader from 'hooks/useLoader';
+import BrowserView from './view';
+import { countItems, formatBooks, joinPages } from './utils';
 
 const BrowserContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,22 +16,40 @@ const BrowserContainer = () => {
 
   const queryEnabled = !isEmpty(title) && !isEmpty(language);
 
-  const { isLoading, isRefetching, data, refetch } = useQuery(
+  const {
+    status,
+    isLoading,
+    isRefetching,
+    isFetchingNextPage,
+    data,
+    refetch,
+    hasNextPage,
+    fetchNextPage,
+    remove,
+  } = useInfiniteQuery(
     GET_BOOKS,
-    () => getBooks(title, author, language),
+    ({ pageParam = 0 }) => getBooks({ startIndex: pageParam, title, author, language }),
     {
       enabled: queryEnabled,
       refetchOnWindowFocus: false,
+      getNextPageParam: (lastPage, totalPages) => {
+        const itemsLength = countItems(totalPages);
+        return lastPage.totalItems > itemsLength ? itemsLength : undefined;
+      },
     }
   );
 
   useEffect(() => {
     if (queryEnabled) {
+      remove();
       refetch();
     }
   }, [title, author, language]);
 
   useEffect(() => {
+    if (isFetchingNextPage) {
+      return;
+    }
     if (isLoading || isRefetching) {
       showLoader();
     } else {
@@ -43,15 +61,25 @@ const BrowserContainer = () => {
     setSearchParams(values);
   };
 
+  const joinedPages = !isNil(data) && joinPages(data.pages, 'items');
+
   return (
     <BrowserView
       onSubmit={onSubmit}
-      books={formatBooks(data)}
+      books={formatBooks(joinedPages)}
       initialValues={{
         title: title || '',
         author: author || '',
         language: language || 'en',
       }}
+      hasMore={hasNextPage}
+      initialLoad={false}
+      onLoadMore={() => {
+        if (!isLoading && !isRefetching && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      }}
+      isDataFetched={status !== 'idle' && !isLoading && !isRefetching}
     />
   );
 };
