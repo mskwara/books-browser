@@ -28,14 +28,12 @@ const BrowserContainer = () => {
     remove,
   } = useInfiniteQuery(
     GET_BOOKS,
-    ({ pageParam = 0 }) =>
-      getBooks({ startIndex: pageParam, title, author, language }),
+    ({ pageParam = 0 }) => getBooks({ startIndex: pageParam, title, author, language }),
     {
       enabled: queryEnabled,
       refetchOnWindowFocus: false,
       getNextPageParam: (lastPage, totalPages) => {
         const itemsLength = countItems(totalPages);
-
         return lastPage.totalItems > itemsLength ? itemsLength : undefined;
       },
     }
@@ -63,7 +61,7 @@ const BrowserContainer = () => {
     setSearchParams(values);
   };
 
-  const joinedPages = !isNil(data) ? joinPages(data.pages, 'items') : undefined;
+  const joinedPages = !isNil(data) && joinPages(data.pages, 'items');
 
   return (
     <BrowserView
@@ -81,7 +79,7 @@ const BrowserContainer = () => {
           fetchNextPage();
         }
       }}
-      isDataFetched={status !== 'idle'}
+      isDataFetched={status !== 'idle' && !isLoading && !isRefetching}
     />
   );
 };

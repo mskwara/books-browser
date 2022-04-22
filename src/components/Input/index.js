@@ -5,9 +5,7 @@ import InputView from './view';
 const Input = (props) => {
   return (
     <FormikField {...props}>
-      {({ field, meta }) => (
-        <InputView {...field} error={meta.error} {...props} />
-      )}
+      {({ field, meta }) => <InputView {...field} error={meta.error} {...props} />}
     </FormikField>
   );
 };

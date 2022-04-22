@@ -2,8 +2,7 @@ import { forEach, get, map, slice, split, uniqBy } from 'lodash';
 
 const DESCRIPTION_WORDS = 15;
 
-const shortenText = (text, maxWords) =>
-  slice(split(text, ' '), 0, maxWords).join(' ');
+const shortenText = (text, maxWords) => slice(split(text, ' '), 0, maxWords).join(' ');
 
 const formatBooks = (items) => {
   if (!items) {

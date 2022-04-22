@@ -14,13 +14,13 @@ export default {
     height: 30,
     width: 'fit-content',
     minWidth: 50,
-    border: (theme) =>
-      `${theme.spacing(1)} solid ${theme.palette.neutral.main}`,
+    border: (theme) => `${theme.spacing(1)} solid ${theme.palette.neutral.main}`,
     borderRadius: 30,
     backgroundColor: (theme) => theme.palette.white,
     cursor: 'pointer',
     padding: (theme) => theme.spacing(0, 10),
     boxSizing: 'border-box',
+    userSelect: 'none',
   },
   selected: {
     backgroundColor: (theme) => theme.palette.primary.main,

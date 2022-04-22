@@ -5,8 +5,7 @@ export default {
     borderRadius: 10,
     backgroundColor: (theme) => theme.palette.white,
     display: 'flex',
-    border: (theme) =>
-      `${theme.spacing(1)} solid ${theme.palette.neutral.main}`,
+    border: (theme) => `${theme.spacing(1)} solid ${theme.palette.neutral.main}`,
     boxSizing: 'border-box',
   },
   image: {

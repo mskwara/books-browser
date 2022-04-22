@@ -15,14 +15,7 @@ import styles from './styles';
 import { getLanguages } from './consts';
 import Loader from 'components/Loader';
 
-const BrowserView = ({
-  books,
-  onSubmit,
-  onLoadMore,
-  hasMore,
-  initialValues,
-  isDataFetched,
-}) => {
+const BrowserView = ({ books, onSubmit, onLoadMore, hasMore, initialValues, isDataFetched }) => {
   const { t } = useTranslation();
   const validationSchema = getValidation(t);
 
@@ -41,12 +34,7 @@ const BrowserView = ({
               </Typography>
               <Typography variant="body">{t('easyAndConvenient')}</Typography>
               <Input name="title" label={t('title')} sx={styles.row} />
-              <Input
-                name="author"
-                label={t('author')}
-                helperText={t('optional')}
-                sx={styles.row}
-              />
+              <Input name="author" label={t('author')} helperText={t('optional')} sx={styles.row} />
               <ChipChooser
                 name="language"
                 label={t('language')}
