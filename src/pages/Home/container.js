@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useInfiniteQuery } from 'react-query';
 import { getBooks, GET_BOOKS } from './queries';
-import { forEach, isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import useLoader from 'hooks/useLoader';
 import BrowserView from './view';
-import { formatBooks, joinPages } from './utils';
+import { countItems, formatBooks, joinPages } from './utils';
 
 const BrowserContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,6 +17,7 @@ const BrowserContainer = () => {
   const queryEnabled = !isEmpty(title) && !isEmpty(language);
 
   const {
+    status,
     isLoading,
     isRefetching,
     isFetchingNextPage,
@@ -24,32 +25,34 @@ const BrowserContainer = () => {
     refetch,
     hasNextPage,
     fetchNextPage,
+    remove,
   } = useInfiniteQuery(
     GET_BOOKS,
     ({ pageParam = 0 }) =>
-      getBooks({ page: pageParam, title, author, language }),
+      getBooks({ startIndex: pageParam, title, author, language }),
     {
       enabled: queryEnabled,
       refetchOnWindowFocus: false,
       getNextPageParam: (lastPage, totalPages) => {
-        let itemsLength = 0;
-        forEach(totalPages, (page) => {
-          itemsLength += page.books.length;
-        });
+        const itemsLength = countItems(totalPages);
 
-        return lastPage.total > itemsLength;
+        return lastPage.totalItems > itemsLength ? itemsLength : undefined;
       },
     }
   );
 
   useEffect(() => {
     if (queryEnabled) {
+      remove();
       refetch();
     }
   }, [title, author, language]);
 
   useEffect(() => {
-    if ((isLoading || isRefetching) && !isFetchingNextPage) {
+    if (isFetchingNextPage) {
+      return;
+    }
+    if (isLoading || isRefetching) {
       showLoader();
     } else {
       hideLoader();
@@ -60,7 +63,7 @@ const BrowserContainer = () => {
     setSearchParams(values);
   };
 
-  const joinedPages = !isNil(data) ? joinPages(data.pages, 'books') : undefined;
+  const joinedPages = !isNil(data) ? joinPages(data.pages, 'items') : undefined;
 
   return (
     <BrowserView
@@ -73,7 +76,12 @@ const BrowserContainer = () => {
       }}
       hasMore={hasNextPage}
       initialLoad={false}
-      onLoadMore={fetchNextPage}
+      onLoadMore={() => {
+        if (!isLoading && !isRefetching && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      }}
+      isDataFetched={status !== 'idle'}
     />
   );
 };

@@ -7,7 +7,7 @@ const GET_BOOKS = 'GET_BOOKS';
 
 const MAX_RESULTS = 10;
 
-const getBooks = async ({ page, title, author, language }) => {
+const getBooks = async ({ startIndex, title, author, language }) => {
   let titleQuery = !isEmpty(title) ? `intitle:${title}` : undefined;
   let authorQuery = !isEmpty(author) ? `inauthor:${author}` : undefined;
 
@@ -16,14 +16,14 @@ const getBooks = async ({ page, title, author, language }) => {
       q: join(compact([titleQuery, authorQuery]), '+'),
       langRestrict: language,
       projection: 'lite',
-      startIndex: page * MAX_RESULTS,
+      startIndex,
       maxResults: MAX_RESULTS,
       // eslint-disable-next-line no-undef
       key: process.env.REACT_APP_API_KEY,
     },
   });
 
-  return res.data;
+  return { totalItems: res.data.totalItems, items: res.data.items || [] };
 };
 
 export { GET_BOOKS, getBooks };

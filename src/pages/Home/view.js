@@ -21,6 +21,7 @@ const BrowserView = ({
   onLoadMore,
   hasMore,
   initialValues,
+  isDataFetched,
 }) => {
   const { t } = useTranslation();
   const validationSchema = getValidation(t);
@@ -62,10 +63,14 @@ const BrowserView = ({
           pageStart={0}
           loadMore={onLoadMore}
           hasMore={hasMore}
-          loader={<Loader />}
+          loader={
+            <Box sx={styles.infiniteLoaderWrapper}>
+              <Loader />
+            </Box>
+          }
         >
           <Box sx={styles.results}>
-            {isEmpty(books) && (
+            {isDataFetched && isEmpty(books) && (
               <Typography variant="h3">{t('noResults')}</Typography>
             )}
             {map(books, (book, index) => (
@@ -102,6 +107,7 @@ BrowserView.propTypes = {
   }),
   onLoadMore: PropTypes.func,
   hasMore: PropTypes.bool,
+  isDataFetched: PropTypes.bool,
 };
 
 BrowserView.defaultProps = {
@@ -109,6 +115,7 @@ BrowserView.defaultProps = {
   initialValues: {},
   onLoadMore: noop,
   hasMore: false,
+  isDataFetched: false,
 };
 
 export default BrowserView;

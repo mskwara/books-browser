@@ -26,11 +26,18 @@ const joinPages = (pages, key) => {
   const result = [];
 
   forEach(pages, (page) => {
-    console.log(page);
     result.push(...page[key]);
   });
 
   return result;
 };
 
-export { formatBooks, joinPages };
+const countItems = (pages) => {
+  let itemsLength = 0;
+  forEach(pages, (page) => {
+    itemsLength += page.items.length;
+  });
+  return itemsLength;
+};
+
+export { formatBooks, joinPages, countItems };
