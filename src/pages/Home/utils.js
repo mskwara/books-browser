@@ -1,4 +1,4 @@
-import { get, map, slice, split, uniqBy } from 'lodash';
+import { forEach, get, map, slice, split, uniqBy } from 'lodash';
 
 const DESCRIPTION_WORDS = 15;
 
@@ -22,4 +22,15 @@ const formatBooks = (items) => {
   return uniqueItems;
 };
 
-export { formatBooks };
+const joinPages = (pages, key) => {
+  const result = [];
+
+  forEach(pages, (page) => {
+    console.log(page);
+    result.push(...page[key]);
+  });
+
+  return result;
+};
+
+export { formatBooks, joinPages };
