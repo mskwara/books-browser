@@ -23,6 +23,11 @@ const InputView = ({ field, error, type, helperText, label, sx, ...props }) => {
           backgroundColor: 'white',
         },
       }}
+      InputLabelProps={{
+        sx: {
+          color: (theme) => theme.palette.neutral.dark,
+        },
+      }}
       FormHelperTextProps={{
         sx: {
           margin: 0,

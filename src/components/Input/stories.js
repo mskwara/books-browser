@@ -10,7 +10,7 @@ export default {
 
 const Template = (args) => (
   <AppThemeProvider>
-    <Formik initialValues={{ switch: false }} onSubmit={() => {}}>
+    <Formik initialValues={{ input: '' }} onSubmit={() => {}}>
       <Form>
         <Component {...args} />
       </Form>
