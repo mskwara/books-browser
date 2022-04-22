@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { compact, isEmpty, join, map } from 'lodash';
+import { compact, isEmpty, join } from 'lodash';
 
 const API_URL = 'https://www.googleapis.com/books/v1';
 
@@ -16,14 +16,8 @@ const getBooks = async (title, author, language) => {
       projection: 'lite',
     },
   });
-  const volumeIds = map(res.data.items, ({ id }) => id);
-  const fullDataPromises = map(volumeIds, (id) =>
-    axios.get(`${API_URL}/volumes/${id}`)
-  );
-  const responses = await Promise.all(fullDataPromises);
-  const books = map(responses, (res) => res.data);
 
-  return books;
+  return res.data.items;
 };
 
 export { GET_BOOKS, getBooks };
