@@ -28,39 +28,46 @@ const BrowserView = ({ books, onSubmit, onLoadMore, hasMore, initialValues, isDa
             onSubmit={onSubmit}
             validationSchema={validationSchema}
           >
-            <Form>
-              <Typography variant="h1" sx={styles.title}>
-                {t('appTitle')}
-              </Typography>
-              <Typography variant="body">{t('easyAndConvenient')}</Typography>
-              <Input name="title" label={t('title')} sx={styles.row} />
-              <Input name="author" label={t('author')} helperText={t('optional')} sx={styles.row} />
-              <ChipChooser
-                name="language"
-                label={t('language')}
-                options={getLanguages(t)}
-                sx={styles.row}
-              />
-              <Button submit sx={styles.submit}>
-                {t('submit')}
-              </Button>
-            </Form>
+            {({ isValid }) => (
+              <Form>
+                <Typography variant="h1" sx={styles.title}>
+                  {t('appTitle')}
+                </Typography>
+                <Typography variant="body">{t('easyAndConvenient')}</Typography>
+                <Input name="title" label={t('title')} sx={styles.row} />
+                <Input
+                  name="author"
+                  label={t('author')}
+                  helperText={t('optional')}
+                  sx={styles.row}
+                />
+                <ChipChooser
+                  name="language"
+                  label={t('language')}
+                  options={getLanguages(t)}
+                  sx={styles.row}
+                />
+                <Button submit disabled={!isValid} sx={styles.submit}>
+                  {t('submit')}
+                </Button>
+              </Form>
+            )}
           </Formik>
         </Box>
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={onLoadMore}
-          hasMore={hasMore}
-          loader={
-            <Box sx={styles.infiniteLoaderWrapper}>
-              <Loader />
-            </Box>
-          }
-        >
-          <Box sx={styles.results}>
-            {isDataFetched && isEmpty(books) && (
-              <Typography variant="h3">{t('noResults')}</Typography>
-            )}
+        <Box sx={styles.results}>
+          {isDataFetched && isEmpty(books) && (
+            <Typography variant="h3">{t('noResults')}</Typography>
+          )}
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={onLoadMore}
+            hasMore={hasMore}
+            loader={
+              <Box key="loader" sx={styles.infiniteLoaderWrapper}>
+                <Loader />
+              </Box>
+            }
+          >
             {map(books, (book, index) => (
               <Book
                 key={book.id}
@@ -73,8 +80,8 @@ const BrowserView = ({ books, onSubmit, onLoadMore, hasMore, initialValues, isDa
                 }}
               />
             ))}
-          </Box>
-        </InfiniteScroll>
+          </InfiniteScroll>
+        </Box>
       </Box>
     </Box>
   );

@@ -4,13 +4,20 @@ import PropTypes from 'prop-types';
 import { Button as MUIButton, Typography } from '@mui/material';
 import styles from './styles';
 
-const Button = ({ onClick, children, submit, sx }) => {
+const Button = ({ onClick, children, disabled, submit, sx }) => {
   return (
     <MUIButton
       type={submit ? 'submit' : undefined}
       onClick={onClick}
       variant="contained"
-      sx={{ ...styles.root, ...sx }}
+      disabled={disabled}
+      sx={{
+        ...styles.root,
+        ...sx,
+        '&.Mui-disabled': {
+          backgroundColor: (theme) => theme.palette.neutral.main,
+        },
+      }}
     >
       <Typography variant="h3" sx={styles.text}>
         {children}
@@ -23,12 +30,14 @@ Button.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,
   submit: PropTypes.bool,
+  disabled: PropTypes.bool,
   sx: PropTypes.object,
 };
 
 Button.defaultProps = {
   onClick: noop,
   submit: false,
+  disabled: false,
   sx: {},
 };
 
