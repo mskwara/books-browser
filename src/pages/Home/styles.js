@@ -21,10 +21,16 @@ export default {
   },
   row: {
     width: '100%',
-    margin: (theme) => theme.spacing(20, 0),
+    marginTop: 20,
   },
   submit: {
     width: 'fit-content',
+    marginTop: 20,
+  },
+  results: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   book: {
     marginBottom: 10,

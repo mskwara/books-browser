@@ -11,21 +11,25 @@ const BrowserContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { showLoader, hideLoader } = useLoader();
   const title = searchParams.get('title');
+  const author = searchParams.get('author');
+  const language = searchParams.get('language');
+
+  const queryEnabled = !isEmpty(title) && !isEmpty(language);
 
   const { isLoading, isRefetching, data, refetch } = useQuery(
     GET_BOOKS,
-    () => getBooks(title),
+    () => getBooks(title, author, language),
     {
-      enabled: !isEmpty(title),
+      enabled: queryEnabled,
       refetchOnWindowFocus: false,
     }
   );
 
   useEffect(() => {
-    if (title) {
+    if (queryEnabled) {
       refetch();
     }
-  }, [title]);
+  }, [title, author, language]);
 
   useEffect(() => {
     if (isLoading || isRefetching) {
@@ -43,7 +47,11 @@ const BrowserContainer = () => {
     <BrowserView
       onSubmit={onSubmit}
       books={formatBooks(data)}
-      initialValues={{ title: title || '' }}
+      initialValues={{
+        title: title || '',
+        author: author || '',
+        language: language || 'en',
+      }}
     />
   );
 };

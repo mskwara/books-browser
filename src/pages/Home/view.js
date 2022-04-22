@@ -1,5 +1,6 @@
 import React from 'react';
-import { map } from 'lodash';
+import { useTranslation } from 'react-i18next';
+import { isEmpty, map } from 'lodash';
 import PropTypes from 'prop-types';
 import { Form, Formik } from 'formik';
 import { Box } from '@mui/system';
@@ -7,9 +8,10 @@ import { Typography } from '@mui/material';
 import Input from 'components/Input';
 import Button from 'components/Button';
 import Book from 'components/Book';
+import ChipChooser from 'components/ChipChooser';
 import getValidation from './validation';
 import styles from './styles';
-import { useTranslation } from 'react-i18next';
+import { getLanguages } from './consts';
 
 const BrowserView = ({ books, onSubmit, initialValues }) => {
   const { t } = useTranslation();
@@ -29,14 +31,29 @@ const BrowserView = ({ books, onSubmit, initialValues }) => {
                 {t('appTitle')}
               </Typography>
               <Typography variant="body">{t('easyAndConvenient')}</Typography>
-              <Input name="title" label={t('searchBooks')} sx={styles.row} />
+              <Input name="title" label={t('title')} sx={styles.row} />
+              <Input
+                name="author"
+                label={t('author')}
+                helperText={t('optional')}
+                sx={styles.row}
+              />
+              <ChipChooser
+                name="language"
+                label={t('language')}
+                options={getLanguages(t)}
+                sx={styles.row}
+              />
               <Button submit sx={styles.submit}>
                 {t('submit')}
               </Button>
             </Form>
           </Formik>
         </Box>
-        <Box>
+        <Box sx={styles.results}>
+          {isEmpty(books) && (
+            <Typography variant="h3">{t('noResults')}</Typography>
+          )}
           {map(books, (book, index) => (
             <Book
               key={book.id}

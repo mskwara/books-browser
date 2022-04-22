@@ -15,6 +15,7 @@ const palette = {
   },
   neutral: {
     main: '#bfbfbf',
+    dark: '#616161',
   },
 };
 
