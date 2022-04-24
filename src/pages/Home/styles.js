@@ -8,7 +8,7 @@ export default {
   },
   content: {
     width: '50%',
-    minWidth: 300,
+    minWidth: 500,
     height: 'fit-content',
     display: 'flex',
     flexDirection: 'column',

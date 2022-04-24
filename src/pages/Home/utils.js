@@ -2,7 +2,11 @@ import { forEach, get, map, slice, split, uniqBy } from 'lodash';
 
 const DESCRIPTION_WORDS = 15;
 
-const shortenText = (text, maxWords) => slice(split(text, ' '), 0, maxWords).join(' ');
+const shortenText = (text, maxWords) => {
+  const shortText = slice(split(text, ' '), 0, maxWords).join(' ');
+  const dots = shortText.length < text?.length ? '...' : '';
+  return `${shortText}${dots}`;
+};
 
 const formatBooks = (items) => {
   if (!items) {
@@ -11,8 +15,8 @@ const formatBooks = (items) => {
 
   const mappedItems = map(items, (item) => ({
     id: item.id,
-    title: item.volumeInfo.title,
-    description: shortenText(item.volumeInfo.title, DESCRIPTION_WORDS),
+    title: item.volumeInfo.title || '',
+    description: shortenText(item.volumeInfo.description, DESCRIPTION_WORDS),
     image: get(item, 'volumeInfo.imageLinks.thumbnail'),
   }));
 

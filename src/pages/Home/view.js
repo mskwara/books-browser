@@ -59,6 +59,7 @@ const BrowserView = ({ books, onSubmit, onLoadMore, hasMore, initialValues, isDa
             <Typography variant="h3">{t('noResults')}</Typography>
           )}
           <InfiniteScroll
+            style={{ width: '100%' }}
             pageStart={0}
             loadMore={onLoadMore}
             hasMore={hasMore}
