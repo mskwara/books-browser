@@ -1,7 +1,8 @@
 export default {
   root: {
     width: '100%',
-    height: 100,
+    minWidth: 600,
+    height: 150,
     borderRadius: 10,
     backgroundColor: (theme) => theme.palette.white,
     display: 'flex',
@@ -18,5 +19,8 @@ export default {
     flexDirection: 'column',
     rowGap: 10,
     padding: 10,
+  },
+  text: {
+    width: 400,
   },
 };

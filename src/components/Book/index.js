@@ -9,8 +9,12 @@ const Book = ({ image, title, description, sx }) => {
     <Box sx={{ ...styles.root, ...sx }}>
       {image && <Box component="img" src={image} alt={title} sx={styles.image} />}
       <Box sx={styles.content}>
-        <Typography variant="h2">{title}</Typography>
-        <Typography variant="body">{description}</Typography>
+        <Typography variant="h2" noWrap sx={styles.text}>
+          {title}
+        </Typography>
+        <Typography variant="body" sx={styles.text}>
+          {description}
+        </Typography>
       </Box>
     </Box>
   );
